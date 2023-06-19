@@ -3,14 +3,13 @@
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
-from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy import Column, Integer, String, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class User(Base):
+class User(BaseModel, Base):
     """Representation of user"""
     if models.storage_t == "db":
         __tablename__ = 'users'
@@ -21,8 +20,6 @@ class User(Base):
         profile_picture = Column(String)
         location = Column(String)
         contact_information = Column(String)
-
-        __mapper_args__ = {
-            'polymorphic_on': role,
-            'polymorphic_identity': 'User'
-        }
+        products = relationship('Product', back_populates='farmer')
+        orders = relationship('Order', back_populates='buyer')
+        reviews = relationship('Review', back_populates='user')

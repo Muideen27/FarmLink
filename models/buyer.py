@@ -7,8 +7,8 @@ from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy import Column, Integer, String, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from user import User
-from order import Order
+from models.user import User
+from models.order import Order
 
 Base = declarative_base()
 

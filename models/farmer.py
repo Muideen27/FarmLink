@@ -5,8 +5,8 @@ from models.base_model import BaseModel, Base
 from os import getenv
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from user import User
-from product import Product
+from models.user import User
+from models.product import Product
 
 class Farmer(User):
     if models.storage_t == "db":
