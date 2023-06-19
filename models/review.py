@@ -1,24 +1,22 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """ holds class Review"""
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
-import sqlalchemy
-from sqlalchemy import Column, String, ForeignKey
-
+from sqlalchemy import Column, String, ForeignKey, Float
+from sqlalchemy.orm import relationship
+from user import User
+from product import Product
 
 class Review(BaseModel, Base):
-    """Representation of Review """
+    """Representation of Review"""
     if models.storage_t == 'db':
         __tablename__ = 'reviews'
-        place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
-        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
-        text = Column(String(1024), nullable=False)
-    else:
-        place_id = ""
-        user_id = ""
-        text = ""
 
-    def __init__(self, *args, **kwargs):
-        """initializes Review"""
-        super().__init__(*args, **kwargs)
+        user_id = Column(String(60), ForeignKey('users.id'))
+        product_id = Column(String(60), ForeignKey('products.id'))
+        rating = Column(Float)
+        comment = Column(String)
+
+        user = relationship(User, backref='reviews')
+        product = relationship(Product, backref='reviews')

@@ -1,36 +1,21 @@
 #!/usr/bin/python3
-""" holds class User"""
-
+""" holds class farmer"""
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
-import sqlalchemy
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from hashlib import md5
+from user import User
+from product import Product
 
-
-class User(BaseModel, Base):
-    """Representation of a user """
-    if models.storage_t == 'db':
+class Farmer(User):
+    if models.storage_t == "db":
+        """class farmer"""
         __tablename__ = 'farmers'
-        email = Column(String(128), nullable=False)
-        password = Column(String(128), nullable=False)
-        first_name = Column(String(128), nullable=True)
-        last_name = Column(String(128), nullable=True)
-        products = relationship("Product", backref="farmer")
-    else:
-        email = ""
-        password = ""
-        first_name = ""
-        last_name = ""
 
-    def __init__(self, *args, **kwargs):
-        """initializes user"""
-        super().__init__(*args, **kwargs)
+        id = Column(String(60), ForeignKey('users.id'), primary_key=True)
+        products = relationship(Product, back_populates='farmer')
 
-    def __setattr__(self, name, value):
-        """sets a password with md5 encryption"""
-        if name == "password":
-            value = md5(value.encode()).hexdigest()
-        super().__setattr__(name, value)
+        __mapper_args__ = {
+            'polymorphic_identity': 'Farmer'
+        }
