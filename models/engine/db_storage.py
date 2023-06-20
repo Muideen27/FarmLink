@@ -4,8 +4,8 @@ Contains the class DBStorage
 """
 
 import models
-from models.product import Product
 from models.base_model import BaseModel, Base
+from models.product import Product
 from models.order import Order
 from models.farmer import Farmer
 from models.buyer import Buyer
