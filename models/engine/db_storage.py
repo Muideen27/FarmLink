@@ -7,7 +7,6 @@ import models
 from models.product import Product
 from models.base_model import BaseModel, Base
 from models.order import Order
-from models.user import User
 from models.farmer import Farmer
 from models.buyer import Buyer
 from models.review import Review
@@ -17,7 +16,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Product": Product, "Order": Order,
-           "User": User, "Review": Review, "Farmer": Farmer, "Buyer": Buyer}
+           "Review": Review, "Farmer": Farmer, "Buyer": Buyer}
 
 
 class DBStorage:
