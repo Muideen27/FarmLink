@@ -11,10 +11,8 @@ class Farmer(BaseModel, Base):
     __tablename__ = 'farmers'
 
     username = Column(String(100), nullable=False)
-    email = Column(String(100), nullable=False)
+    email = Column(String(100), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
-    confirm_password = Column(String(100), nullable=False)
-    image = Column(String(100))
     location = Column(String(280), nullable=False)
     contact_information = Column(String(100), nullable=False)
     products = relationship('Product', backref='farmers')

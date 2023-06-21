@@ -61,8 +61,7 @@ class DBStorage:
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
-            self.__session.expunge(obj)
-            self.save()
+            self.__session.delete(obj)
 
     def reload(self):
         """reloads data from the database"""
@@ -104,3 +103,15 @@ class DBStorage:
             count = len(models.storage.all(cls).values())
 
         return count
+
+    def check_duplicate_email(self, email, class_name):
+        """
+            check for duplicate email
+        """
+        cls = classes.get(class_name)
+        if cls:
+            exists = self.__session.query(cls).filter_by(email=email).first()
+            return exists is not None
+        else:
+            raise ValueError(f"Invalid class name: {class_name}")
+
