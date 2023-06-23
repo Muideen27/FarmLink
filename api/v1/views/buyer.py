@@ -3,52 +3,52 @@
 new view for Farmer object that handles all default RESTful API
 """
 from models import storage
-from models.farmer import Farmer
+from models.buyer import Buyer
 
 
 from flask import Flask, jsonify, abort, request
 from sqlalchemy.exc import IntegrityError
 from api.v1.views import app_views
 
-@app_views.route('/farmers', methods=['GET'], strict_slashes=False)
-def get_farmers():
+@app_views.route('/buyers', methods=['GET'], strict_slashes=False)
+def get_buyers():
     """retrieve a list all farmers"""
-    all_farmers = []
-    farmers = storage.all("Farmer").values()
-    for farmer in farmers:
-        all_farmers.append(farmer.to_dict())
-    return jsonify(all_farmers)
+    all_buyer = []
+    buyers = storage.all("Buyer").values()
+    for buyer in buyers:
+        all_buyer.append(buyer.to_dict())
+    return jsonify(all_buyer), 200
 
 
-@app_views.route('/farmers/<string:farmer_id>',
+@app_views.route('/buyer/<string:buyer_id>',
                 methods=['GET'], strict_slashes=False)
-def get_farmer(farmer_id):
+def get_buyer(buyer_id):
     """retrieve a farmer"""
-    all_farmers = []
-    farmers = storage.all("Farmer").values()
-    for farmer in farmers:
-        all_farmers.append(farmer.to_dict())
-    for farmer in all_farmers:
-        if farmer.get("id") == farmer_id:
-            return jsonify(farmer)
+    all_buyers = []
+    buyers = storage.all("Buyer").values()
+    for buyer in buyers:
+        all_buyers.append(buyer.to_dict())
+    for buyer in all_buyers:
+        if buyer.get("id") == buyer_id:
+            return jsonify(buyer)
     abort(404)
 
-@app_views.route('/farmers/<string:farmer_id>',
+@app_views.route('/buyers/<string:buyer_id>',
                 methods=['DELETE'], strict_slashes=False)
-def delete_farmer(farmer_id):
-    """delete a farmer account"""
-    farmers = storage.all("Farmer")
+def delete_buyer(buyer_id):
+    """delete a buyer account"""
+    buyers = storage.all("Buyer")
     try:
-        key = "Farmer." + farmer_id
-        storage.delete(farmers[key])
+        key = "Buyer." + buyer_id
+        storage.delete(buyers[key])
         storage.save()
         return jsonify({}), 200
     except BaseException:
         abort(404)
 
-@app_views.route('/farmers/', methods=['POST'], strict_slashes=False)
-def post_farmers():
-    """Create a Farmer"""
+@app_views.route('/buyers/', methods=['POST'], strict_slashes=False)
+def post_buyer():
+    """Create a buyer"""
     if not request.is_json:
         abort(400, 'Not a JSON')
     else:
@@ -60,39 +60,39 @@ def post_farmers():
     else:
         email = request_body['email']
         password = request_body['password']
-        class_name = 'Farmer'  
+        class_name = 'Buyer'  
 
-        # Check if the email already exists for the Farmer class
+        # Check if the email already exists for the Buyer class
         duplicate_email = storage.check_duplicate_email(email, class_name)
 
         if duplicate_email:
             abort(400, 'Email address already exists')
 
-        # Create a new Farmer object
-        farmer = Farmer(email=email, password=password)
+        # Create a new Buyer object
+        buyer = Buyer(email=email, password=password)
 
         # Set other attributes of the farmer object based on request_body
         if 'username' in request_body:
-            farmer.username = request_body['username']
+            buyer.username = request_body['username']
         if 'location' in request_body:
-            farmer.location = request_body['location']
+            buyer.location = request_body['location']
         if 'contact_information' in request_body:
-            farmer.contact_information = request_body['contact_information']
+            buyer.contact_information = request_body['contact_information']
 
         # Save the farmer object to the database
-        storage.new(farmer)
+        storage.new(buyer)
         storage.save()
 
-        return jsonify(farmer.to_dict()), 201
+        return jsonify(buyer.to_dict()), 201
 
-@app_views.route('/farmers/<string:farmer_id>/',
+@app_views.route('/buyers/<string:buyer_id>/',
                 methods=['PUT'], strict_slashes=False)
-def put_farmer(farmer_id):
+def put_buyer(buyer_id):
     """Updates the farmer account"""
-    farmers = storage.all(Farmer)
-    key = 'Farmer.' + farmer_id
+    buyers = storage.all(Buyer)
+    key = 'Buyer.' + buyer_id
     try:
-        farmer = farmers[key]
+        buyer = buyers[key]
     except BaseException:
         abort(404)
     if request.is_json:
@@ -101,6 +101,6 @@ def put_farmer(farmer_id):
         abort(400, 'Not a JSON')
     for key, value in request_body.items():
         if key != 'id' and key != 'created_at' and key != 'updated_at':
-            setattr(farmer, key, value)
+            setattr(buyer, key, value)
     storage.save()
-    return jsonify(farmer.to_dict()), 200
+    return jsonify(buyer.to_dict()), 200
