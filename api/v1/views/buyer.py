@@ -20,7 +20,7 @@ def get_buyers():
     return jsonify(all_buyer), 200
 
 
-@app_views.route('/buyer/<string:buyer_id>',
+@app_views.route('/buyers/<string:buyer_id>',
                 methods=['GET'], strict_slashes=False)
 def get_buyer(buyer_id):
     """retrieve a farmer"""

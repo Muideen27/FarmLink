@@ -10,7 +10,7 @@ from api.v1.views import app_views
 
 @app_views.route('/farmers/<string:farmer_id>/products',
                  methods=['GET'], strict_slashes=False)
-def get_product(farmer_id):
+def get_products(farmer_id):
     """
     retrieve the list of product objects that is associated with a particular farmer
     """
@@ -22,7 +22,7 @@ def get_product(farmer_id):
         all_products.append(product.to_dict())
     return jsonify(all_products)
 
-@pp_views.route('/products/<string:product_id>/',
+@app_views.route('/products/<string:product_id>/',
                 methods =['GET'], strict_slashes=False)
 def get_product(product_id):
     """
