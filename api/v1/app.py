@@ -28,6 +28,6 @@ def teardown_appcontext(exception=None):
 
 if __name__ == "__main__":
     host = os.environ.get("FARMLINK_API_HOST", "0.0.0.0")
-    port = int(os.environ.get("FARMLINK_API_PORT", 8000))
+    port = int(os.environ.get("FARMLINK_API_PORT", 5000))
 
     app.run(host=host, port=port, threaded=True)
