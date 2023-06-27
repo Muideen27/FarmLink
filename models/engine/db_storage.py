@@ -12,8 +12,10 @@ from models.buyer import Buyer
 from models.review import Review
 from os import getenv
 import sqlalchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
+from flask_bcrypt import check_password_hash
+
 
 classes = {"Product": Product, "Order": Order,
            "Review": Review, "Farmer": Farmer, "Buyer": Buyer}
@@ -52,6 +54,7 @@ class DBStorage:
 
     def new(self, obj):
         """add the object to the current database session"""
+        obj.hashed_password = obj.hash_password(obj.hashed_password)
         self.__session.add(obj)
 
     def save(self):
@@ -84,11 +87,12 @@ class DBStorage:
 
         all_cls = models.storage.all(cls)
         for value in all_cls.values():
-            if (value.id == id):
+            if value.id == id:
+                if isinstance(value, Farmer) or isinstance(value, Buyer):
+                    value.password = value.hashed_password
                 return value
-
         return None
-
+    
     def count(self, cls=None):
         """
         count the number of objects in storage
@@ -114,4 +118,44 @@ class DBStorage:
             return exists is not None
         else:
             raise ValueError(f"Invalid class name: {class_name}")
+        
+    def authenticate_user(self, username, password, user_type):
+        """
+        Authenticate a user of the specified type (Farmer or Buyer)
+        based on the provided username and password.
+        Return the user object if authentication is successful, otherwise return None.
+        """
+        if user_type == 'Farmer':
+            user_cls = Farmer
+        elif user_type == 'Buyer':
+            user_cls = Buyer
+        else:
+            raise ValueError(f"Invalid user type: {user_type}")
+        
+        username = username.strip()
+        password = password.strip()
 
+        # Find the user by username in the database
+        user = self.__session.query(user_cls).filter_by(username=username).first()
+        
+        print(f"User: {user}")
+        print("Hashed Password:", user.hashed_password)
+        print("Plain Password:", password)
+        # Check if the user exists and the password matches
+        if user and check_password_hash(user.hashed_password.strip(), password.strip()):
+            
+            print("Authentication successful")
+            return user
+        
+        print("Authentication failed")
+        return None
+    
+    def get_number_by_name(self, farmer_id, name):
+        """
+        Retrieve the number based on the product name and farmer ID
+        """
+        query = text(f"SELECT COUNT(*) FROM products WHERE farmer_id = '{farmer_id}' AND name = '{name}';")
+        result = self.__session.execute(query).scalar()
+        if result is not None:
+            return result
+        return None
