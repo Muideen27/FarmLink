@@ -2,29 +2,27 @@
 """
 Contains class BaseModel
 """
-
+import uuid
 from datetime import datetime
-import models
 from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-import uuid
+import models
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
-if models.storage_t == "db":
+hbnb_storage_type = getenv('HBNB_TYPE_STORAGE')
+if hbnb_storage_type is not None and hbnb_storage_type == 'db':
     Base = declarative_base()
-else:
-    Base = object
 
 
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
-    if models.storage_t == "db":
-        id = Column(String(60), primary_key=True)
-        created_at = Column(DateTime, default=datetime.utcnow)
-        updated_at = Column(DateTime, default=datetime.utcnow)
+    
+    id = Column(String(60), primary_key=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         """Initialization of the base model"""
@@ -54,25 +52,20 @@ class BaseModel:
 
     def save(self):
         """updates the attribute 'updated_at' with the current datetime"""
+        from models import storage
         self.updated_at = datetime.utcnow()
-        models.storage.new(self)
-        models.storage.save()
+        storage.new(self)
+        storage.save()
 
-    def to_dict(self, save_fs=None):
+    def to_dict(self, exclude=[]):
         """returns a dictionary containing all keys/values of the instance"""
-        new_dict = self.__dict__.copy()
-        if "created_at" in new_dict:
-            new_dict["created_at"] = new_dict["created_at"].strftime(time)
-        if "updated_at" in new_dict:
-            new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
-        new_dict["__class__"] = self.__class__.__name__
-        if "_sa_instance_state" in new_dict:
-            del new_dict["_sa_instance_state"]
-        if save_fs is None:
-            if "password" in new_dict:
-                del new_dict["password"]
-        return new_dict
-
+        data = {}
+        for column in self.__table__.columns:
+            if column.name not in exclude:
+                value = getattr(self, column.name)
+                data[column.name] = value
+        return data
+    
     def delete(self):
         """delete the current instance from the storage"""
         models.storage.delete(self)

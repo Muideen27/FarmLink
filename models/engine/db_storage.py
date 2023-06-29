@@ -4,20 +4,21 @@ Contains the class DBStorage
 """
 
 import models
-from models.product import Product
 from models.base_model import BaseModel, Base
+from models.product import Product
 from models.order import Order
-from models.user import User
 from models.farmer import Farmer
 from models.buyer import Buyer
 from models.review import Review
 from os import getenv
-import sqlalchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
+from flask_bcrypt import check_password_hash
+
 
 classes = {"Product": Product, "Order": Order,
-           "User": User, "Review": Review, "Farmer": Farmer, "Buyer": Buyer}
+           "Review": Review, "Farmer": Farmer, "Buyer": Buyer}
 
 
 class DBStorage:
@@ -53,6 +54,7 @@ class DBStorage:
 
     def new(self, obj):
         """add the object to the current database session"""
+        obj.hashed_password = obj.hash_password(obj.hashed_password)
         self.__session.add(obj)
 
     def save(self):
@@ -85,11 +87,12 @@ class DBStorage:
 
         all_cls = models.storage.all(cls)
         for value in all_cls.values():
-            if (value.id == id):
+            if value.id == id:
+                if isinstance(value, Farmer) or isinstance(value, Buyer):
+                    value.password = value.hashed_password
                 return value
-
         return None
-
+    
     def count(self, cls=None):
         """
         count the number of objects in storage
@@ -104,3 +107,56 @@ class DBStorage:
             count = len(models.storage.all(cls).values())
 
         return count
+
+    def check_duplicate_email(self, email, class_name):
+        """
+            check for duplicate email
+        """
+        cls = classes.get(class_name)
+        if cls:
+            exists = self.__session.query(cls).filter_by(email=email).first()
+            return exists is not None
+        else:
+            raise ValueError(f"Invalid class name: {class_name}")
+        
+    def authenticate_user(self, email, password, user_type):
+        """
+            Authenticate a user of the specified type (Farmer or Buyer)
+            based on the provided username and password.
+            Return the user object if authentication is successful, otherwise return None.
+        """
+        if user_type == 'Farmer':
+            user_cls = Farmer
+        elif user_type == 'Buyer':
+            user_cls = Buyer
+        else:
+            raise ValueError(f"Invalid user type: {user_type}")
+        
+        email = email.strip()
+        password = password.strip()
+
+        try:
+            # Find the user by username in the database
+            user = self.__session.query(user_cls).filter_by(email=email).first()
+        except NoResultFound:
+            None
+        
+        if user:
+            # Check if the user exists and the password matches
+            if (user.email and user.email == email) or (user.hashed_password and check_password_hash(user.hashed_password, password.strip())):
+                
+                print("Authentication successful")
+                return user
+                
+        print("Authentication failed")
+        return None
+    
+    def get_number_by_name(self, farmer_id, name):
+        """
+        Retrieve the number based on the product name and farmer ID
+        """
+        query = text(f"SELECT COUNT(*) FROM products WHERE farmer_id = '{farmer_id}' AND name = '{name}';")
+        result = self.__session.execute(query).scalar()
+        if result is not None:
+            return result
+        return None
