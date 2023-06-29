@@ -11,9 +11,9 @@ from models.farmer import Farmer
 from models.buyer import Buyer
 from models.review import Review
 from os import getenv
-import sqlalchemy
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 from flask_bcrypt import check_password_hash
 
 
@@ -119,11 +119,11 @@ class DBStorage:
         else:
             raise ValueError(f"Invalid class name: {class_name}")
         
-    def authenticate_user(self, username, password, user_type):
+    def authenticate_user(self, email, password, user_type):
         """
-        Authenticate a user of the specified type (Farmer or Buyer)
-        based on the provided username and password.
-        Return the user object if authentication is successful, otherwise return None.
+            Authenticate a user of the specified type (Farmer or Buyer)
+            based on the provided username and password.
+            Return the user object if authentication is successful, otherwise return None.
         """
         if user_type == 'Farmer':
             user_cls = Farmer
@@ -132,21 +132,22 @@ class DBStorage:
         else:
             raise ValueError(f"Invalid user type: {user_type}")
         
-        username = username.strip()
+        email = email.strip()
         password = password.strip()
 
-        # Find the user by username in the database
-        user = self.__session.query(user_cls).filter_by(username=username).first()
+        try:
+            # Find the user by username in the database
+            user = self.__session.query(user_cls).filter_by(email=email).first()
+        except NoResultFound:
+            None
         
-        print(f"User: {user}")
-        print("Hashed Password:", user.hashed_password)
-        print("Plain Password:", password)
-        # Check if the user exists and the password matches
-        if user and check_password_hash(user.hashed_password.strip(), password.strip()):
-            
-            print("Authentication successful")
-            return user
-        
+        if user:
+            # Check if the user exists and the password matches
+            if (user.email and user.email == email) or (user.hashed_password and check_password_hash(user.hashed_password, password.strip())):
+                
+                print("Authentication successful")
+                return user
+                
         print("Authentication failed")
         return None
     

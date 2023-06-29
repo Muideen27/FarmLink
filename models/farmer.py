@@ -25,13 +25,10 @@ class Farmer(UserMixin, BaseModel, Base):
         """Implemented hashed password"""
         super().__init__()
         self.username = username
-        self.hashed_password = self.hash_password(hashed_password)
+        self.hashed_password = generate_password_hash(hashed_password)
         self.email = email
         self.location = location
         self.contact_information = contact_information
 
-    def hash_password(self, password):
-        self.hashed_password = generate_password_hash(password)
-        return self.hashed_password
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)

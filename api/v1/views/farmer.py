@@ -9,8 +9,7 @@ from flask import Flask, jsonify, abort, request, send_file, session
 from sqlalchemy.exc import IntegrityError
 from api.v1.views import app_views
 from werkzeug.utils import secure_filename
-from flask_login import login_user, current_user, login_required
-from flask_bcrypt import generate_password_hash
+from flask_login import login_user, current_user, login_required, logout_user
 
 
 @app_views.route('/farmers', methods=['GET'], strict_slashes=False)
@@ -199,18 +198,18 @@ def login():
     if current_user.is_authenticated:
         return jsonify({'message': 'You are already logged in'})
 
-    username = request.form.get('username')
+    email = request.form.get('email')
     password = request.form.get('password')
 
     # Perform authentication here and retrieve the user object
-    user = storage.authenticate_user(username, password, "Farmer")
+    user = storage.authenticate_user(email, password, "Farmer")
 
     if user:
-        # Log in the user using Flask-Login
-        login_user(user)
-        return jsonify({'message': 'Login successful'})
-
-    return jsonify({'message': 'Invalid username or password'})
+        if login_user(user):
+            return jsonify({'message': 'Login successful'})
+        else:
+            return jsonify({'message': 'Failed to login'})
+    return jsonify({'message': 'Invalid Email or password'})
 
 @app_views.route('/farmers/<string:farmer_id>/',
                 methods=['PUT'], strict_slashes=False)

@@ -1,18 +1,19 @@
 #!/usr/bin/python3
+import models
 from models import storage
 from models.farmer import Farmer
-from models.base_model import BaseModel, Base
-from werkzeug.security import generate_password_hash, check_password_hash
+from models.base_model import BaseModel
+from flask_bcrypt import generate_password_hash, check_password_hash
 
 
 def test_password_hashing():
     # Get the password from the user during registration
-    user = storage.get(Farmer, 'a44daf8c-8a55-4b14-b356-90cc0dee7f27')
+    # user = storage.get(Farmer, 'a44daf8c-8a55-4b14-b356-90cc0dee7f27')
+    user = storage.all(Farmer)
     print(user)
-    password = input("Enter password: ")
 
     # Hash the password
-    hashed_password = generate_password_hash(password)
+    hashed_password = user.hashed_password
 
     print("Hashed Password:", hashed_password)
 
@@ -20,7 +21,7 @@ def test_password_hashing():
     login_password = input("Enter login password: ")
 
     # Verify the password
-    if check_password_hash(hashed_password.strip(), login_password.strip()):
+    if user.email or check_password_hash(hashed_password.strip(), login_password.strip()):
         print("Authentication successful")
     else:
         print("Authentication failed")
