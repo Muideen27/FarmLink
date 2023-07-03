@@ -5,12 +5,20 @@ new view for Farmer object that handles all default RESTful API
 from models import storage
 from models.farmer import Farmer
 import os
-from flask import Flask, jsonify, abort, request, send_file, session
+from flask import jsonify, abort, request, send_file, render_template, redirect, url_for, flash
 from sqlalchemy.exc import IntegrityError
 from api.v1.views import app_views
 from werkzeug.utils import secure_filename
 from flask_login import login_user, current_user, login_required, logout_user
+from flask_bcrypt import generate_password_hash, check_password_hash
 
+@app_views.route('/', strict_slashes=False)
+def home_index():
+    """
+	handles request to custom template with farmers
+	"""
+    farmers = list(storage.all("Farmer").values())
+    return render_template('home.html', farmers=farmers)
 
 @app_views.route('/farmers', methods=['GET'], strict_slashes=False)
 def get_farmers():
@@ -102,46 +110,39 @@ def delete_image(farmer_id):
 
     return jsonify({'message': 'Image deleted successfully'}), 200
 
-@app_views.route('/farmers/', methods=['POST'], strict_slashes=False)
+@app_views.route('/signup/', methods= ['GET'], strict_slashes=False)
+def signup():
+    return render_template('signup1.html')
+
+@app_views.route('/signup/', methods=['POST'], strict_slashes=False)
 def post_farmers():
     """Create a Farmer"""
-    if not request.is_json:
-        abort(400, 'Not a JSON')
+    username = request.form.get('username')
+    hashed_password = request.form.get('hashed_password')
+    email = request.form.get('email')
+    location = request.form.get('location')
+    contact_information = request.form.get('contact_information')
+    class_name = 'Farmer'
+
+    # Check if the email already exists for the Farmer class
+    duplicate_email = storage.check_duplicate_email(email, class_name)
+
+    if duplicate_email:
+        flash('Email address already exists')
+        return redirect(url_for('app_views.signup'))
+
+    if hashed_password:
+        farmer = Farmer(username=username, hashed_password=generate_password_hash(hashed_password),
+                        email=email, location=location, contact_information=contact_information)
     else:
-        request_body = request.get_json()
-    if 'email' not in request_body:
-        abort(400, 'Missing email')
-    elif 'hashed_password' not in request_body:
-        abort(400, 'Missing password')
-    else:
-        email = request_body['email']
-        hashed_password = request_body['hashed_password']
-        class_name = 'Farmer'
+        error_message = 'Password must not be empty'
+        return render_template('signup.html', error_message=error_message)
 
-        # Check if the email already exists for the Farmer class
-        duplicate_email = storage.check_duplicate_email(email, class_name)
+    # Save the farmer object to the database
+    storage.new(farmer)
+    storage.save()
 
-        if duplicate_email:
-            abort(400, 'Email address already exists')
-
-        # Set other attributes of the farmer object based on request_body
-        username = request_body.get('username', '')
-        location = request_body.get('location', '')
-        contact_information = request_body.get('contact_information', '')
-
-        if hashed_password:
-            farmer = Farmer(username=username, hashed_password=hashed_password,
-                    email=email, location=location, contact_information=contact_information)
-        else:
-        # Handle the case when the password is empty
-            abort(400, 'Password must be non-empty')
-
-        # Save the farmer object to the database
-        storage.new(farmer)
-        storage.save()
-
-        # return jsonify(farmer.to_dict(exclude=['products', 'review'])), 201
-        return jsonify({'message': 'Created successfully'}), 201
+    return redirect(url_for('app_views.login_get'))
 
 @app_views.route('/farmers/<string:farmer_id>/upload-image', 
                  methods=['POST'], strict_slashes=False)
@@ -186,15 +187,24 @@ def allowed_file(filename, allowed_extensions):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
-
-@app_views.route('/protected', methods=['GET'], strict_slashes=False)
+@app_views.route('/logout')
 @login_required
-def protected_route():
+def logout():
+    logout_user()
+    return redirect(url_for('app_views.home_index'))
+
+@app_views.route('/profile', methods=['GET'], strict_slashes=False)
+@login_required
+def profile():
     # Only authenticated users can access this route
-    return jsonify({'message': 'You are authenticated'})
+    return render_template('profile.html', name=current_user.username)
+
+@app_views.route('/login', methods=['GET'], strict_slashes=False)
+def login_get():
+    return render_template('login1.html')
 
 @app_views.route('/login', methods=['POST'], strict_slashes=False)
-def login():
+def login_post():
     if current_user.is_authenticated:
         return jsonify({'message': 'You are already logged in'})
 
@@ -204,13 +214,12 @@ def login():
     # Perform authentication here and retrieve the user object
     user = storage.authenticate_user(email, password, "Farmer")
 
-    if user:
-        if login_user(user):
-            return jsonify({'message': 'Login successful'})
-        else:
-            return jsonify({'message': 'Failed to login'})
-    return jsonify({'message': 'Invalid Email or password'})
-
+    if user is None or (user.email != email and not check_password_hash(user.hashed_password, password)):
+        flash('Please check your login details and try again.')
+        return redirect(url_for('app_views.login_get'))
+    login_user(user)
+    return redirect(url_for('app_views.profile'))
+    
 @app_views.route('/farmers/<string:farmer_id>/',
                 methods=['PUT'], strict_slashes=False)
 def put_farmer(farmer_id):

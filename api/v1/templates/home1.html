@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block custom_styles %}
+<section class="filters">
+
+  <!-- **********************
+       USERS
+       ********************** -->
+
+  <div class="locations">
+    <h3>Users</h3>
+    <h4>&nbsp;</h4>
+    <ul class="popover">
+      {% for farmer in farmers|sort(attribute='username') %}
+      <H2>{{ farmer.username }}</H2>
+      <UL>
+        {% for product in farmer.products|sort(attribute='name') %}
+        <LI>{{ product.name }}</LI>
+        {% endfor %}
+      </UL>
+      {% endfor %}
+    </ul>
+    
+  </div>
+  <!-- **********************
+          SEARCH BUTTON
+          ********************** -->
+
+  <button>Search</button>
+</section>
+{% endblock %}
+{% block content %}
+<h1 class="title">
+  Welcome to FarmLink Application
+</h1>
+<h2 class="subtitle">
+  Let's Create the Future Together
+</h2>
+{% endblock %}

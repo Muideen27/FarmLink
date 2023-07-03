@@ -6,11 +6,12 @@ from api.v1.views import app_views
 from models.farmer import Farmer
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import os
-from user_loader import load_user
+#from flask_wtf import CSRFProtect
 
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
+#csrf = CSRFProtect(app)
 
 app.register_blueprint(app_views, url_prefix='/api/v1')
 
@@ -21,7 +22,7 @@ app.debug = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'app_view.login_post'
 
 
 @app.errorhandler(404)
@@ -31,9 +32,12 @@ def handle_404(error):
     return jsonify({"error": "Not found"}), 404
 
 # print("Farmer ID:", farmer_id)
+
 @login_manager.user_loader
-def user_loader_callback(farmer_id):
-    return load_user(farmer_id, storage)
+def load_user(farmer_id):
+    farmer = storage.get(Farmer, farmer_id)
+    return farmer
+
 
 @app.teardown_appcontext
 def teardown_appcontext(exception=None):
