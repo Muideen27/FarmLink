@@ -197,7 +197,7 @@ def logout():
 @login_required
 def profile():
     # Only authenticated users can access this route
-    return render_template('profile.html', name=current_user.username)
+    return render_template('check.html', name=current_user.username)
 
 @app_views.route('/login', methods=['GET'], strict_slashes=False)
 def login_get():
