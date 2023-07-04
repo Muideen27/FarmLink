@@ -1,0 +1,130 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .header-logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .search {
+    flex-grow: 1;
+    margin: 0 20px;
+  }
+
+  .search-input {
+    width: 30%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;;
+  }
+
+  .search-button {
+    background-color: #ffca28;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  .product-box {
+    width: 200px;
+    background-color: #ffffff;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-box img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .product-details {
+    flex-grow: 1;
+  }
+
+  .product-details .product-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .product-details .description {
+    margin-bottom: 5px;
+  }
+
+  .product-details .location {
+    color: #999999;
+    margin-bottom: 5px;
+  }
+
+  .product-details .price {
+    font-weight: bold;
+    color: #ffca28;
+  }
+
+  .sign-in-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+
+  .sign-in-form h2 {
+    margin-top: 0;
+  }
+
+  .form-field {
+    margin-bottom: 10px;
+  }
+
+  .form-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .form-field input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .form-field .ion-icon {
+    margin-right: 5px;
+  }
+
+  .form-field .form-submit {
+    background-color: #ffca28;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
