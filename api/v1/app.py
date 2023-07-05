@@ -6,12 +6,12 @@ from api.v1.views import app_views
 from models.farmer import Farmer
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import os
-#from flask_wtf import CSRFProtect
+from flask_wtf import CSRFProtect
 
 
 
 app = Flask(__name__, static_folder='static')
-#csrf = CSRFProtect(app)
+csrf = CSRFProtect(app)
 
 app.register_blueprint(app_views, url_prefix='/api/v1')
 

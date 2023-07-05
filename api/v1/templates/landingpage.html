@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmLink</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/landingpage.css') }}">
+  <script src="{{ url_for('static', filename='script/landingpage.js') }}"></script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="header-logo">FarmLink</div>
+    <div class="search">
+      <input type="text" class="search-input" placeholder="Search">
+      <button class="search-button">Search</button>
+    </div>
+    <div class="user-profile">
+    <!-- <div class="user-icon-container"> -->
+      <!-- <div class="hamburger"></div> -->
+      <ion-icon name="home"></ion-icon>
+      
+      <img src="{{ url_for('static', filename='image/John Doe.jpg') }}" alt="Profile Picture">
+  
+      <div class="dropdown">
+        <!-- <a href="#" class="sign-in-btn">Sign Up <ion-icon name="log-in-outline"></ion-icon></a>
+        <a href="#">Log In <ion-icon name="log-out-outline"></ion-icon></a>
+        <a href="{{ url_for('app_views.logout') }}">Log Out <ion-icon name="log-out-outline"></ion-icon></a> -->
+        <ul>
+          <li>Messages</li>
+          <li>Accounts</li>
+          <li class="sign-in-btn">Sign Up</li>
+          <li>Login</li>
+          <li>Logout</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+    <!-- <div class="user-icon-container">
+      <div class="user-icon">
+        <div class="border"></div>
+        <div class="hamburger"></div>
+        <div class="image-wrapper">
+          <img src="{{ url_for('static', filename='image/default1.png') }}" alt="Profile Picture" class="user-image">
+        </div>
+        <div class="dropdown-container">
+          <ul>
+            <li>Messages</li>
+            <li>Accounts</li>
+            <li>Sign Up</li>
+            <li>Login</li>
+            <li>Logout</li>
+          </ul>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="user-icon-container">
+      <div class="user-icon">
+        <div class="hamburger"></div>
+        <img src="{{ url_for('static', filename='image/John Doe.jpg') }}" alt="Profile Picture" class="user-image">
+      </div>
+    </div> -->
+
+  <div class="content">
+    {% for product in products %}
+    <div class="product-box">
+      <img src="{{ product.image }}" alt="{{ product.name }}">
+      <div class="product-details">
+        <div class="product-name">{{ product.name }}</div>
+        <div class="description">{{ product.description }}</div>
+        <div class="location">Location: {{ product.location }}</div>
+        <div class="price">{{ product.price }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+
+  <div class="sign-in-form">
+
+    <h2>Sign Up</h2>
+    {% if error_message %}
+    <p class="error">{{ error_message }}</p>
+    {% endif %}
+
+    {% set messages = get_flashed_messages() %}
+    {% if messages %}
+    <!-- {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div id="return-message" {% if request.args.get('error') %}style="display: block;"{% endif %}>
+      {{ messages[0] }}
+    </div>
+    {% endif %}
+    {% endwith %} -->
+    <div class="notification is-danger">
+      {{ messages[0] }}. Go to <a href="{{ url_for('app_views.login_get') }}">login page</a>.
+    </div>
+    {% endif %}
+    <form action="{{ url_for('app_views.post_farmers') }}" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="form-field">
+        <label for="username"><ion-icon name="person-outline"></ion-icon>Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username">
+      </div>
+      <div class="form-field">
+        <label for="email"><ion-icon name="mail-outline"></ion-icon>Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email">
+      </div>
+      <div class="form-field">
+        <label for="password"><ion-icon name="lock-closed-outline"></ion-icon>Password</label>
+        <input type="password" id="password" name="hashed_password" placeholder="Enter your password">
+      </div>
+      <div class="form-field">
+        <label for="location"><ion-icon name="location-outline"></ion-icon>Location</label>
+        <input type="text" id="location" name="location" placeholder="Enter your location">
+      </div>
+      <div class="form-field">
+        <label for="contact"><ion-icon name="call-outline"></ion-icon>Contact</label>
+        <input type="text" id="contact" name="contact_information" placeholder="Enter your contact information">
+      </div>
+      <button type="submit" class="form-submit">Sign Up</button>
+      <button type="button" class="close-form">Cancel</button>
+    </form>
+  </div>
+
+</body>
+
+</html>

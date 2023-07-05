@@ -112,7 +112,7 @@ def delete_image(farmer_id):
 
 @app_views.route('/signup/', methods= ['GET'], strict_slashes=False)
 def signup():
-    return render_template('signup1.html')
+    return render_template('landingpage.html')
 
 @app_views.route('/signup/', methods=['POST'], strict_slashes=False)
 def post_farmers():
@@ -128,8 +128,11 @@ def post_farmers():
     duplicate_email = storage.check_duplicate_email(email, class_name)
 
     if duplicate_email:
-        flash('Email address already exists')
-        return redirect(url_for('app_views.signup'))
+        flash('Email address already exists', 'error')
+        return redirect(url_for('app_views.home_index', error=True))
+        # return render_template('landingpage.html')
+
+    farmer = None
 
     if hashed_password:
         farmer = Farmer(username=username, hashed_password=generate_password_hash(hashed_password),
