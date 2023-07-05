@@ -1,0 +1,118 @@
+@import url(https://fonts.googleapis.com/css2?family=Poppins);
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+.page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+}
+
+.top-section {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f2f2f2;
+}
+
+.bottom-section {
+  width: 100%;
+  height: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0 20px; /* Add padding to adjust spacing inside the bottom section */
+  box-sizing: border-box; /* Include padding in the element's total width */
+}
+
+.welcome-message {
+  flex-grow: 1;
+}
+
+.welcome-message p {
+  font-size: 18px;
+}
+
+.profile-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-image label {
+  cursor: pointer;
+}
+
+.profile-image img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-image input[type="file"] {
+  display: none;
+}
+
+.horizontal-line {
+  margin: 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.product-form-container {
+  width: 100%;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.product-form-container h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.product-form-container form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.product-form-container .form-group {
+  margin-bottom: 20px;
+}
+
+.product-form-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.product-form-container input,
+.product-form-container textarea,
+.product-form-container select {
+  width: 80%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-family: 'Poppins', sans-serif;
+}
+
+.product-form-container button {
+  padding: 10px 20px;
+  background-color: #162938;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
