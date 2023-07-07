@@ -1,0 +1,61 @@
+header {
+    height: 100px; 
+    width: 100%;
+    /*border-bottom: 1px solid #CCCCCC;*/
+    background-repeat: no-repeat;
+    background-position: 20px center;
+    flex-shrink: 0;
+}
+header div {
+    float: right;
+    border-radius:100%;
+    height:40px;
+    width:40px;
+    background: #cccccc;
+    margin-right:30px;
+    position:relative;
+    top:50%;
+    transform: translateY(-50%);
+}
+.available{
+    background: #ff545f;
+}
+
+.logo {
+    width: 50px; /* Adjust the width of the logo */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px;
+    margin-left: 50px;
+    margin-top: 20px;
+    font-family: cursive;
+    font-size: 35px;
+    color:black;
+}
+
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+}
+  
+.navbar-menu {
+    display: flex;
+    list-style-type: none;
+    margin-top: -55px;
+    margin-right: 20px;
+    padding: 0;
+    font-size: large;
+}
+
+.navbar-item {
+    margin-right: 15px; /* Adjust the margin as needed */
+}
+
+.navbar-item a {
+    text-decoration: none; /* Remove underline */
+    color: rgb(81, 79, 79); /* Set the default color of the links */
+}
+  
+  .navbar-item a:hover {
+    background-color:  rgb(54, 148, 125); /* Set the background color on hover */
+    padding: 15px 10px;
+}

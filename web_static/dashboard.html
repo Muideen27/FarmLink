@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="dashboard.js"></script>
+</head>
+
+<body>
+  <div class="top-bar">
+    <h1>FarmLink</h1>
+    <div class="user-profile">
+      <ion-icon name="notifications-sharp"></ion-icon>
+      <img src="John Doe.jpg" alt="Profile Picture">
+      <span class="username">John Doe</span>
+      <div class="dropdown">
+        <a href="#">Update Profile <ion-icon name="person-circle-outline"></ion-icon></a>
+        <a href="#">Log Out <ion-icon name="log-out-outline"></ion-icon></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <ul class="menu">
+      <li><ion-icon name="home"></ion-icon> Home</li>
+      <li><ion-icon name="trending-up"></ion-icon> Trade History</li>
+      <li><ion-icon name="wallet"></ion-icon> My Offers</li>
+      <li><ion-icon name="thumbs-up"></ion-icon> Favorite Offers</li>
+      <li><ion-icon name="stats-chart"></ion-icon> Trade Statistics</li>
+      <li><ion-icon name="checkmark-done-circle"></ion-icon> Invite a Friend</li>
+      <li><ion-icon name="settings"></ion-icon> Account Settings</li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <div class="section buying-section">
+      <h2>Buying Section</h2>
+      <p>Explore available products and make purchases.</p>
+      <a href="browse-products.html" class="btn">Browse Products</a>
+    </div>
+
+    <div class="section selling-section">
+      <h2>Selling Section</h2>
+      <p>List your products and reach potential buyers.</p>
+      <a href="product-form.html" class="btn">List Products</a>
+    </div>
+  </div>
+</body>
+
+</html>

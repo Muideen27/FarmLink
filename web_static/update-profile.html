@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>update-profile-form</title>
+    <link rel="stylesheet" href="update-profile.css">
+</head>
+<body>
+    <header>
+        <h1>FarmLink</h1>
+        <nav>
+          <ul>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/update-profile">Update Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </nav>
+      </header>
+      
+      <main>
+        <h2>Update Profile</h2>
+        
+        <form id="update-profile-form">
+          <label for="username">Username:</label>
+          <input type="text" id="username" required>
+    
+          <label for="email">Email:</label>
+          <input type="email" id="email" required>
+    
+          <label for="password">Password:</label>
+          <input type="password" id="password" required>
+    
+          <label for="location">Location:</label>
+          <input type="text" id="location">
+    
+          <label for="contact-info">Contact Information:</label>
+          <textarea id="contact-info"></textarea>
+    
+          <label for="user-type">User Type:</label>
+          <select id="user-type">
+            <option value="buyer">Buyer</option>
+            <option value="farmer">Farmer</option>
+          </select>
+    
+          <button type="submit">Update</button>
+        </form>
+      </main>
+    
+      <footer>
+        &copy; 2023 FarmLink. All rights reserved.
+      </footer>
+    
+      <script src="script.js"></script>
+</body>
+</html>

@@ -8,9 +8,9 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 
 def test_password_hashing():
     # Get the password from the user during registration
-    # user = storage.get(Farmer, 'a44daf8c-8a55-4b14-b356-90cc0dee7f27')
-    user = storage.all(Farmer)
-    print(user)
+    user = storage.get(Farmer, 'a44daf8c-8a55-4b14-b356-90cc0dee7f27')
+    #user = storage.all(Farmer)
+    print(user.id)
 
     # Hash the password
     hashed_password = user.hashed_password

@@ -142,3 +142,28 @@
   font-family: 'Poppins', sans-serif;
   align-items: center;
 }
+
+/* update and logout css*/
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 999;
+}
+
+.dropdown a {
+  display: flex;
+  align-items: center;
+  color: #333;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.dropdown a img {
+  cursor: pointer;
+}

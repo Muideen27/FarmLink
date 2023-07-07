@@ -6,7 +6,7 @@ from os import getenv
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
-from flask_bcrypt import generate_password_hash, check_password_hash
+from flask_bcrypt import generate_password_hash
 
 
 class Farmer(UserMixin, BaseModel, Base):
@@ -25,10 +25,11 @@ class Farmer(UserMixin, BaseModel, Base):
         """Implemented hashed password"""
         super().__init__()
         self.username = username
-        self.hashed_password = generate_password_hash(hashed_password)
+        self.hashed_password = self.hash_password(hashed_password)
         self.email = email
         self.location = location
         self.contact_information = contact_information
 
-    def check_password(self, password):
-        return check_password_hash(self.hashed_password, password)
+    def hash_password(self, password):
+        """Hashes the provided password using Flask-Bcrypt"""
+        return generate_password_hash(password)

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmLink User Registration page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/signup.css') }}" type="text/css">
+</head>
+<body>
+<header>
+    <nav class="navigation">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+    </nav>
+</header>
+{% block content %}
+<div class="wrapper">
+    <div class="dashboard">
+        <div class="flash_messages">
+            {% if error_message %}
+            <p class="error">{{ error_message }}</p>
+            {% endif %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}. Go to <a href="{{ url_for('app_views.login_get') }}">login page</a>.
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        <h1>signup</h1>
+        <form action="{{ url_for('app_views.post_farmers') }}" method="POST" enctype="multipart/form-data">
+            <!-- Add CSRF token to the form -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <label for="username">Username:</label>
+            <input type="text" name="username" required><br>
+        
+        
+            <label for="email">Email:</label>
+            <input type="email" name="email"><br>
+        
+        
+            <label for="password">Password:</label>
+            <input type="password" name="hashed_password" required><br>
+        
+            <label for="location">Location:</label>
+            <input type="text" name="location"><br>
+        
+            <label for="contact_information">Contact Information:</label>
+            <input type="text" name="contact_information"><br>
+
+        
+            <label for="image">Profile Image:</label>
+            <input type="file" name="image"><br>
+        
+
+            <input type="submit" value="Create User">
+        </form>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
