@@ -28,24 +28,3 @@ loginForm.addEventListener('submit', function(event) {
     this.submit();
 }
 });
-
-const sliderContainer = document.querySelector('.slider-container');
-        const slides = sliderContainer.querySelectorAll('div');
-
-        let currentSlide = 0;
-
-        function showSlide() {
-            slides.forEach((slide, index) => {
-                slide.style.transform = `translateX(${index - currentSlide}00%)`;
-            });
-        }
-
-        function nextSlide() {
-            currentSlide++;
-            if (currentSlide >= slides.length) {
-                currentSlide = 0;
-            }
-            showSlide();
-        }
-
-        setInterval(nextSlide, 6000);
