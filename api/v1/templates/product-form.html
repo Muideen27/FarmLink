@@ -4,56 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>product-form</title>
-    <link rel="stylesheet" href="product-form.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/product-form.css') }}">
+
 </head>
 <body>
-    
-<div class="product-form">
-    <h2>Add New Product</h2>
-    <form>
-      <div class="form-group">
-        <label for="name">Product Name</label>
-        <input type="text" id="name" name="name" required>
+  <div class="page-container">
+    <div class="top-section">
+      <div class="welcome-message">
+        <p>{{ farmer.username }} Welcome to FarmLink <span id="username"></span>.</p>
       </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
+      <div class="profile-image">
+        <label for="profile-pic-input">
+          <img id="profile-pic-preview" src="default-profile-pic.png" alt="Profile Picture">
+          <input type="file" id="profile-pic-input" accept="image/*">
+        </label>
       </div>
-      <div class="form-group">
-        <label for="quantity">Quantity</label>
-        <input type="number" id="quantity" name="quantity" required>
-      </div>
-      <div class="form-group">
-        <label for="price">Price</label>
-        <input type="text" id="price" name="price" oninput="formatPrice(event)" required>
-      </div>
-      <div class="form-group">
-        <label for="location">Location</label>
-        <input type="text" id="location" name="location" required>
-      </div>
-      <div class="form-group">
-        <label for="availability">Availability Status</label>
-        <select id="availability" name="availability" required>
-          <option value="available">Available</option>
-          <option value="sold">Sold</option>
-          <option value="out_of_stock">Out of Stock</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <button type="submit">Submit</button>
-      </div>
-    </form>
+    </div>
+    <hr class="horizontal-line">
+    <div class="bottom-section">
+      <div class="product-form-container">
+          <h2>Add New Product</h2>
+          <form id="product-form" action="{{ url_for('app_views.post_product', farmer_id=farmer_id) }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+              <label for="name">Product Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="location">Location</label>
+              <input type="text" id="location" name="location" required>
+            </div>
+            <div class="form-group">
+              <label for="quantity">Quantity</label>
+              <input type="number" id="quantity" name="quantity" required>
+            </div>
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input type="text" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="availability">Availability Status</label>
+              <select id="availability" name="availability" required>
+                <option value="available">Available</option>
+                <option value="sold">Sold</option>
+                <option value="out_of_stock">Out of Stock</option>
+              </select>
+            </div>
+            <div class="product-image">
+              <label for="product-pic-input">
+                <img id="product-pic-preview" src="{{ url_for('static', filename='image/default1.png') }}" alt="Add Product Picture">
+                <input type="file" id="product-pic-input" accept="image/*">
+              </label>
+            </div>
+            <div class="form-group">
+              <button type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+    </div>
   </div>
-  
-  <script>
-    function formatPrice(event) {
-      const input = event.target;
-      const price = input.value.replace(/\D/g, '');
-      const formattedPrice = '#' + price;
-      input.value = formattedPrice;
-    }
+  <script src="{{ url_for('static', filename='script/product-form.js') }}" data-farmer-id="{{ farmer_id }}">
   </script>
-  
-  
+
 </body>
 </html>
