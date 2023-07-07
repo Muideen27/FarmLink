@@ -20,7 +20,7 @@ body {
 
 header {
         position: fixed;
-        background: #ccc;
+        background: #fff;
         top: 0;
         left: 0;
         width: 100%;
@@ -53,7 +53,7 @@ header {
         bottom: -6px;
         width: 100px;
         height: 3px;
-        background: #fff;
+        background: red;
         border-radius: 5px;
         transform-origin: right;
         transform: scaleX(0);
@@ -65,257 +65,11 @@ header {
         transform: scaleX(.6);
 }
 
-.navigation .btnLogin-popup {
-        width: 130px;
-        height: 50px;
-        background: transparent;
-        border: 1px solid #fff;
-        outline: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 1.0em;
-        color: #fff;
-        font-weight: 500;
-        margin-left: 40px;
-        margin-top: 10px;
-        transition: .5s;
-}
-
-.navigation .btnLogin-popup:hover {
-        background: #fff;
-        color: red;
-}
-
-.wrapper {
-        position: relative;
-        width: 350px;
-        height: 380px;
-        background: transparent;
-        border: 2px solid rgba(225, 225, 225, .5);
-        border-radius: 20px;
-        backdrop-filter: blur(20px);
-        box-shadow: 0 0 30px rgba(0, 0, 0, .5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        transform: scale(0);
-        transition: transform .5s ease, height .2s ease;
-}
-
-.wrapper.active-popup {
-        transform: scale(1);
-}
-
-.wrapper.active {
-        height: 450px;
-}
-
-.wrapper .form-box {
-        width: 100%;
-        padding: 40px;
-}
-
-.wrapper .form-box.login {
-        transition: transform .18s ease;
-        transform: translateX(0);
-}
-
-.wrapper.active .form-box.login {
-        transition: none;
-        transform: translateX(-400px);
-}
-
-.wrapper .form-box.register{
-        position: absolute;
-        transition: none;
-        transform: translateX(400px);
-}
-
-.wrapper.active .form-box.register {
-        transition: transform .18s ease;
-        transform: translateX(0);
-}
-
-.wrapper .icon-close {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 45px;
-        height: 45px;
-        background: #162938;
-        font-size: 2em;
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-bottom-left-radius: 20px;
-        cursor: pointer;
-        z-index: 1;
-}
-
-.form-box h2 {
-        font-size: 2em;
-        color: #162938;
-        text-align: center;
-}
-
-.input-box {
-        position: relative;
-        width: 100%;
-        height: 50px;
-        border-bottom: 2px solid #162938;
-        margin: 30px 0;
-}
-
-.input-box label {
-        position: absolute;
-        top: 50%;
-        left: 5px;
-        transform: translateY(-50%);
-        font-size: 1em;
-        color: #162938;
-        font-weight: 500;
-        pointer-events: none;
-        transition: .5s;
-}
-
-.input-box input:focus~label,
-.input-box input:valid~label {
-        top: -5px;
-}
-
-.input-box input {
-        width: 100%;
-        height: 100%;
-        background: transparent;
-        border: none;
-        outline: none;
-        font-size: 1em;
-        color: #162938;
-        font-weight: 600;
-        padding: 0 35 px 0 5px;
-}
-
-.input-box .icon {
-        position: absolute;
-        right: 8px;
-        font-size: 1.2em;
-        color: #162938;
-        line-height: 57px;
-}
-
-.remember-forget {
-        font-size: .9em;
-        color: #162938;
-        font-weight: 500;
-        margin: -15px 0 15px;
-        display: flex;
-        justify-content: space-between;
-}
-
-.remember-forget label input {
-        accent-color: #162938;
-        margin-left: 3px;
-}
-
-.remember-forget a {
-        color: #162938;
-        text-decoration: none;
-}
-
-.remember-forget a:hover {
-        text-decoration: underline;
-}
-
-.btn {
-        width: 100%;
-        height: 45px;
-        background: #162938;
-        border: none;
-        outline: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 1em;
-        color: #fff;
-        font-weight: 500;
-}
-
-.login-register {
-        font-size: .9em;
-        color: #162938;
-        text-align: center;
-        font-weight: 500;
-        margin: 25px 0 10px;
-}
-
-.login-register p a {
-        color: #162938;
-        text-decoration: none;
-        font-weight: 600;
-}
-
-.login-register p a:hover {
-        text-decoration: underline;
-}
-
-.email_error,
-.pass_error {
-        width: 100%;
-        margin-top: 2px;
-        font-size: 12px;
-        color: red;
-        font-weight: 500;
-        text-align: center;
-        display: none;
-    }
-
-    /* search anything css */
-
-.search-bar {
-        width: 20%;
-        max-width: 700px;
-        height: 40px;
-        background: rgba(225, 225, 225, 0.2);
-        display: flex;
-        align-items: center;
-        border-radius: 60px;
-        padding: 10px -10px;
-        backdrop-filter: blur(4px) saturate(180%);
-}
-
-.search-bar input {
-        background-color: transparent;
-        flex: 1;
-        border: 0;
-        outline: none;
-        padding: 24px 20px;
-        /* font-size */
-        color: #fff;
-}
-
-::placeholder {
-        color: #fff;
-}
-
-.search-bar button img {
-        width: 25px;
-}
-
-.search-bar button {
-        border: 0;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        background: #162938;
-        cursor: pointer;
-}
-
 /*css style for About*/
 
 .form-box.about {
-        width: 350px;
-        height: 380px;
+        width: 500px;
+        height: 450px;
         background-color: transparent;
         backdrop-filter: blur(20px);
         border: 1px solid #ccc;
@@ -328,19 +82,23 @@ header {
       .form-box.about h2 {
         font-size: 24px;
         margin-bottom: 10px;
+        color: purple;
       }
       
       .form-box.about img {
-        width: 200px;
-        height: 150px;
+        width: 300px;
+        height: 250px;
         backdrop-filter: blur(20px);
-        margin-bottom: 10px;
+        margin-top: 10px;
         border-radius: 5px;
       }
       
       .form-box.about p {
         font-size: 16px;
         line-height: 1.5;
+        /* border-top: 70px; */
+        justify-content: center;
+        align-items: center;
       }
       
       .form-icon {
