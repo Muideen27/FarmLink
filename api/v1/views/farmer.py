@@ -12,7 +12,15 @@ from werkzeug.utils import secure_filename
 from flask_login import login_user, current_user, login_required, logout_user
 from flask_bcrypt import generate_password_hash, check_password_hash
 
-@app_views.route('/', strict_slashes=False)
+
+# @app_views.route('/', strict_slashes=False)
+# def home():
+#     """
+#         Route for landing page
+#     """
+#     return render_template('home.html')
+
+@app_views.route('/index', strict_slashes=False)
 def home_index():
     """
 	handles request to custom template with farmers
@@ -200,7 +208,11 @@ def logout():
 @login_required
 def profile():
     # Only authenticated users can access this route
-    return render_template('check.html', name=current_user.username)
+    farmer_id = current_user.id
+    farmer = storage.get(Farmer, farmer_id)
+    if farmer is None:
+        abort(404, 'Farmer not found')
+    return render_template('product-form.html', farmer_id=farmer_id, name=current_user.username, farmer=farmer)
 
 @app_views.route('/login', methods=['GET'], strict_slashes=False)
 def login_get():
@@ -216,7 +228,7 @@ def login_post():
 
     # Perform authentication here and retrieve the user object
     user = storage.authenticate_user(email, password, "Farmer")
-
+    print(user)
     if user is None or (user.email != email and not check_password_hash(user.hashed_password, password)):
         flash('Please check your login details and try again.')
         return redirect(url_for('app_views.login_get'))

@@ -12,7 +12,6 @@ from flask_wtf import CSRFProtect
 
 app = Flask(__name__, static_folder='static')
 csrf = CSRFProtect(app)
-
 app.register_blueprint(app_views, url_prefix='/api/v1')
 
 secret_key = os.urandom(24)
