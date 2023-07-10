@@ -127,20 +127,17 @@ def allowed_file(filename, allowed_extensions):
            filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
-# @app_views.route('/farmers/<string:farmer_id>/products/',
-#                  methods=['POST'], strict_slashes=False)
+
+# @app_views.route('/farmers/<string:farmer_id>/products/', methods=['POST'], strict_slashes=False)
 # def post_product(farmer_id):
 #     """creates a product"""
-#     if not request.is_json:
-#         abort(400, 'Not a JSON')
-#     else:
-#         request_body = request.get_json()
+#     request_body = request.form
 
 #     if 'name' not in request_body:
 #         abort(400, 'Missing name')
 #     if 'price' not in request_body:
 #         abort(400, 'Missing price')
-    
+
 #     name = request_body['name']
 #     price = request_body['price']
 #     # Increment number based on name
@@ -149,10 +146,11 @@ def allowed_file(filename, allowed_extensions):
 #         number = 1
 #     else:
 #         number += 1
+#     request_body = request.form.to_dict(flat=False)
 #     request_body.update({"farmer_id": farmer_id})
-    
+
 #     product = Product(**request_body)
-    
+
 #     if 'description' in request_body:
 #         product.description = request_body['description']
 #     if 'location' in request_body:
@@ -162,7 +160,6 @@ def allowed_file(filename, allowed_extensions):
 #     if 'availability_status' in request_body:
 #         product.availability_status = request_body['availability_status']
 
-    
 #     # Print the number based on the name
 #     print(f"Number for product {name}: {number}")
 #     # Save the product
@@ -171,6 +168,7 @@ def allowed_file(filename, allowed_extensions):
 
 #     # Return a response indicating success
 #     return jsonify(message="Product created successfully"), 201
+
 
 @app_views.route('/farmers/<string:farmer_id>/products/', methods=['POST'], strict_slashes=False)
 def post_product(farmer_id):
@@ -193,6 +191,9 @@ def post_product(farmer_id):
     request_body = request.form.to_dict(flat=False)
     request_body.update({"farmer_id": farmer_id})
 
+    # Remove the 'hashed_password' key from the request_body
+    request_body.pop('hashed_password', None)
+
     product = Product(**request_body)
 
     if 'description' in request_body:
@@ -212,7 +213,6 @@ def post_product(farmer_id):
 
     # Return a response indicating success
     return jsonify(message="Product created successfully"), 201
-
 
 
 

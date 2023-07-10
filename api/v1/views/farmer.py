@@ -13,12 +13,12 @@ from flask_login import login_user, current_user, login_required, logout_user
 from flask_bcrypt import generate_password_hash, check_password_hash
 
 
-# @app_views.route('/', strict_slashes=False)
-# def home():
-#     """
-#         Route for landing page
-#     """
-#     return render_template('home.html')
+@app_views.route('/', strict_slashes=False)
+def home():
+    """
+        Route for landing page
+    """
+    return render_template('home.html')
 
 @app_views.route('/index', strict_slashes=False)
 def home_index():
@@ -26,7 +26,7 @@ def home_index():
 	handles request to custom template with farmers
 	"""
     products = list(storage.all("Product").values())
-    return render_template('landingpage.html', products=products)
+    return render_template('home1.html', products=products)
 
 @app_views.route('/farmers', methods=['GET'], strict_slashes=False)
 def get_farmers():
