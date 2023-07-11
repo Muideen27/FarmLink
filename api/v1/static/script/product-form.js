@@ -164,9 +164,10 @@ function formatPrice(event) {
 //         alert('An error occurred while uploading the image');
 //     });
 // });
-var farmerId = "{{ farmer_id }}"; 
-var uploadURL = '/upload-product-image/' + farmerId;
-var postProductURL = '/post-product/' + farmerId;
+
+// var farmerId = "{{ farmer_id }}"; 
+// var uploadURL = '/upload-product-image/' + farmerId;
+// var postProductURL = '/post-product/' + farmerId;
 
 const fileInput = document.getElementById('profile-pic-input');
 
@@ -222,4 +223,57 @@ productInput.addEventListener('change', function(event) {
     // Read the selected file as a data URL
     reader.readAsDataURL(selectedFile);
     }
+});
+
+document.getElementById('product-form').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent the default form submission
+
+  // Get the form data
+  var formData = new FormData(this);
+
+  // Get the farmer_id from the data attribute
+  var farmerId = document.querySelector('script[data-farmer-id]').getAttribute('data-farmer-id');
+
+  // Define the URLs
+  var uploadURL = '/upload-product-image/' + farmerId;
+  var postProductURL = '/post-product/' + farmerId;
+
+  // Get the selected value from the availability field
+  var availabilitySelect = document.getElementById('availability');
+  var availabilityValue = availabilitySelect.options[availabilitySelect.selectedIndex].value;
+
+  // Set the availability_status value in the form data
+  formData.set('availability_status', availabilityValue);
+
+  // Perform the image upload request
+  fetch(uploadURL, {
+    method: 'POST',
+    body: new FormData(document.getElementById('product-form'))
+  })
+    .then(function(response) {
+      if (response.ok) {
+        // Image upload successful, continue with product creation
+        return fetch(postProductURL, {
+          method: 'POST',
+          body: formData
+        });
+      } else {
+        // Image upload failed
+        throw new Error('Failed to upload image');
+      }
+    })
+    .then(function(response) {
+      if (response.ok) {
+        // Product creation successful
+        alert('Product created successfully');
+        // Perform any additional actions or redirects
+      } else {
+        // Product creation failed
+        throw new Error('Failed to create product');
+      }
+    })
+    .catch(function(error) {
+      // Handle error from image upload or product creation request
+      alert('An error occurred: ' + error.message);
+    });
 });

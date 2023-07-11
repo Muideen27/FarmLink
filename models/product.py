@@ -2,7 +2,7 @@
 """ holds class Products"""
 from models.base_model import BaseModel, Base
 from os import getenv
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, Text
 from sqlalchemy.orm import relationship
 
 class Product(BaseModel, Base):
@@ -10,7 +10,7 @@ class Product(BaseModel, Base):
     __tablename__ = 'products'
     farmer_id = Column(String(60), ForeignKey('farmers.id'))
     name = Column(String(100), nullable=False)
-    description = Column(String(100), nullable=False)
+    description = Column(Text, nullable=False)
     quantity = Column(Integer)
     price = Column(Float)
     location = Column(String(100), nullable=False)

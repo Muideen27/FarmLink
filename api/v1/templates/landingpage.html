@@ -6,12 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FarmLink</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}"> 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/landingpage.css') }}">
-  <script src="{{ url_for('static', filename='script/landingpage.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/landingpage.css') }}"> 
 </head>
 
 <body>
@@ -22,16 +19,13 @@
       <button class="search-button">Search</button>
     </div>
     <div class="user-profile">
-    <!-- <div class="user-icon-container"> -->
-      <!-- <div class="hamburger"></div> -->
+    
       <ion-icon name="home"></ion-icon>
       
       <img src="{{ url_for('static', filename='image/John Doe.jpg') }}" alt="Profile Picture">
   
       <div class="dropdown">
-        <!-- <a href="#" class="sign-in-btn">Sign Up <ion-icon name="log-in-outline"></ion-icon></a>
-        <a href="#">Log In <ion-icon name="log-out-outline"></ion-icon></a>
-        <a href="{{ url_for('app_views.logout') }}">Log Out <ion-icon name="log-out-outline"></ion-icon></a> -->
+        
         <ul>
           <li>Messages</li>
           <li>Accounts</li>
@@ -42,30 +36,6 @@
       </div>
     </div>
   </div>
-    <!-- <div class="user-icon-container">
-      <div class="user-icon">
-        <div class="border"></div>
-        <div class="hamburger"></div>
-        <div class="image-wrapper">
-          <img src="{{ url_for('static', filename='image/default1.png') }}" alt="Profile Picture" class="user-image">
-        </div>
-        <div class="dropdown-container">
-          <ul>
-            <li>Messages</li>
-            <li>Accounts</li>
-            <li>Sign Up</li>
-            <li>Login</li>
-            <li>Logout</li>
-          </ul>
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class="user-icon-container">
-      <div class="user-icon">
-        <div class="hamburger"></div>
-        <img src="{{ url_for('static', filename='image/John Doe.jpg') }}" alt="Profile Picture" class="user-image">
-      </div>
-    </div> -->
 
   <div class="content">
     {% for product in products %}
@@ -98,11 +68,12 @@
     </div>
     {% endif %}
     {% endwith %} -->
-    <div class="notification is-danger">
+    <!-- <div class="notification is-danger">
       {{ messages[0] }}. Go to <a href="{{ url_for('app_views.login_get') }}">login page</a>.
     </div>
-    {% endif %}
-    <form action="{{ url_for('app_views.post_farmers') }}" method="POST">
+    {% endif %} -->
+    <!-- <form action="{{ url_for('app_views.post_farmers') }}" method="POST"> -->
+    <!-- <form>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="form-field">
         <label for="username"><ion-icon name="person-outline"></ion-icon>Username</label>
@@ -128,6 +99,8 @@
       <button type="button" class="close-form">Cancel</button>
     </form>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+  <script src="{{ url_for('static', filename='script/landingpage.js') }}"></script> -->
 
 </body>
 
