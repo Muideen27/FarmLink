@@ -5,7 +5,7 @@ new view for product objects that handles all default RESTful api actions
 from models import storage
 from models.farmer import Farmer
 from models.product import Product
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, url_for, render_template
 from api.v1.views import app_views
 from werkzeug.utils import secure_filename
 import os
@@ -61,8 +61,8 @@ def delete_product_image(product_id):
     except BaseException:
         abort(404)
 
-    image_path = os.path.join(os.path.expanduser('~/FarmLink/image/'), product_id + '.jpg')
-    default_image_path = '/home/bucha/FarmLink/image/default1.png'
+    image_path = os.path.join(os.path.expanduser('~/FarmLink/image1/'), product_id + '.jpg')
+    default_image_path = '/home/bucha/FarmLink/image1/default1.png'
 
     if image_path == default_image_path:
         abort(400, "Cannot delete the default image")
@@ -72,7 +72,7 @@ def delete_product_image(product_id):
 
     # Check if the farmer has any other images
     has_other_images = any(
-        os.path.exists(os.path.join(os.path.expanduser('~/FarmLink/image/'), f'{id}.jpg'))
+        os.path.exists(os.path.join(os.path.expanduser('~/FarmLink/image1/'), f'{id}.jpg'))
         for id in products.keys() if id != key
     )
 
@@ -111,7 +111,7 @@ def upload_product_image(product_id):
     
      # Generate a secure filename and save the file
     filename = secure_filename(product_id + '.jpg')
-    filepath = os.path.join(os.path.expanduser('~/FarmLink/image/'), filename)
+    filepath = os.path.join(os.path.expanduser('~/FarmLink/image1/'), filename)
     
     # Delete the existing image file if it exists
     if os.path.exists(filepath):
@@ -170,51 +170,34 @@ def allowed_file(filename, allowed_extensions):
 #     return jsonify(message="Product created successfully"), 201
 
 
-@app_views.route('/farmers/<string:farmer_id>/products/', methods=['POST'], strict_slashes=False)
-def post_product(farmer_id):
-    """creates a product"""
-    request_body = request.form
+# @app_views.route('/farmers/<string:farmer_id>/products/', methods=['POST'], strict_slashes=False)
+# def post_product(farmer_id):
+#     """creates a product"""
+#     name = request.form['name']
+#     description = request.form['description']
+#     location = request.form['location']
+#     price = request.form['price']
+#     availability = request.form['availability']
+#     image_file = request.files['image']
 
-    if 'name' not in request_body:
-        abort(400, 'Missing name')
-    if 'price' not in request_body:
-        abort(400, 'Missing price')
+#     # Save the image file
+#     if image_file:
+#         # Generate a unique filename
+#         filename = secure_filename(image_file.filename)
+#         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#         image_file.save(filepath)
 
-    name = request_body['name']
-    price = request_body['price']
-    # Increment number based on name
-    number = storage.get_number_by_name(farmer_id, name)
-    if number is None:
-        number = 1
-    else:
-        number += 1
-    request_body = request.form.to_dict(flat=False)
-    request_body.update({"farmer_id": farmer_id})
+#         # Create the product and set the image field
+#         product = Product(
+#             name=name,
+#             description=description,
+#             location=location,
+#             price=price,
+#             availability=availability,
+#             image=url_for('uploaded_file', filename=filename)  # Save the image URL
+#         )
+#     storage.new(product)
+#     storage.save()
 
-    # Remove the 'hashed_password' key from the request_body
-    request_body.pop('hashed_password', None)
-
-    product = Product(**request_body)
-
-    if 'description' in request_body:
-        product.description = request_body['description']
-    if 'location' in request_body:
-        product.location = request_body['location']
-    if 'quantity' in request_body:
-        product.quantity = request_body['quantity']
-    if 'availability_status' in request_body:
-        product.availability_status = request_body['availability_status']
-
-    # Print the number based on the name
-    print(f"Number for product {name}: {number}")
-    # Save the product
-    storage.new(product)
-    storage.save()
-
-    # Return a response indicating success
-    return jsonify(message="Product created successfully"), 201
-
-
-
-
+#     return render_template('home1.html')
 

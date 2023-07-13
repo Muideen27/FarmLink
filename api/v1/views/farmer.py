@@ -26,6 +26,9 @@ def home_index():
 	handles request to custom template with farmers
 	"""
     products = list(storage.all("Product").values())
+    # farmer = current_user
+    # farmers = storage.all("Farmer")
+    
     return render_template('home1.html', products=products)
 
 @app_views.route('/farmers', methods=['GET'], strict_slashes=False)

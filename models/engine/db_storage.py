@@ -93,20 +93,40 @@ class DBStorage:
                 return value
         return None
     
+    # def count(self, cls=None):
+    #     """
+    #     count the number of objects in storage
+    #     """
+    #     all_class = classes.values()
+
+    #     if not cls:
+    #         count = 0
+    #         for clas in all_class:
+    #             count += len(models.storage.all(clas).values())
+    #     else:
+    #         count = len(models.storage.all(cls).values())
+
+    #     return count
+
     def count(self, cls=None):
         """
-        count the number of objects in storage
-        """
-        all_class = classes.values()
+        Count the number of objects in storage.
 
+        Args:
+            cls (class): class of the objects to count.
+
+        Returns:
+            int: count of objects.
+        """
         if not cls:
             count = 0
-            for clas in all_class:
-                count += len(models.storage.all(clas).values())
+            for class_name in self.classes.values():
+                count += len(models.storage.all(class_name).values())
         else:
             count = len(models.storage.all(cls).values())
 
         return count
+
 
     def check_duplicate_email(self, email, class_name):
         """
