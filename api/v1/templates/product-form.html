@@ -24,7 +24,7 @@
     <div class="bottom-section">
       <div class="product-form-container">
           <h2>Add New Product</h2>
-          <form id="product-form" action="{{ url_for('app_views.post_product', farmer_id=farmer_id) }}" method="POST" enctype="multipart/form-data">
+          <form id="product-form" action="{{ url_for('post_product', farmer_id=farmer_id) }}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
               <label for="name">Product Name</label>
@@ -57,7 +57,7 @@
             <div class="product-image">
               <label for="product-pic-input">
                 <img id="product-pic-preview" src="{{ url_for('static', filename='image/default1.png') }}" alt="Add Product Picture">
-                <input type="file" id="product-pic-input" accept="image/*">
+                <input type="file" id="product-pic-input" name="image" accept="image/*">
               </label>
             </div>
             <div class="form-group">

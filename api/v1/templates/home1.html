@@ -33,15 +33,18 @@
     </div>
     <div class="content">
       {% for product in products %}
-      <div class="product-box">
-        <img src="{{ product.image }}" alt="{{ product.name }}">
-        <div class="product-details">
-          <div class="product-name">{{ product.name }}</div>
-          <div class="description">{{ product.description }}</div>
-          <div class="location">Location: {{ product.location }}</div>
-          <div class="price">{{ product.price }}</div>
+        <div class="product-box">
+          <img src="{{ product.image }}" alt="{{ product.name }}">
+          <div class="product-details">
+            <div class="product-name">{{ product.name }}</div>
+            <div class="description">{{ product.description }}</div>
+            <div class="location">Location: {{ product.location }}</div>
+            <div class="price">{{ product.price }}</div>
+          </div>
         </div>
-      </div>
+        {% if loop.index % 3 == 0 %}
+          <div class="clearfix"></div>
+        {% endif %}
       {% endfor %}
     </div>
     <div class="sign-in-form">
